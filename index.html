@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Review Comment Box</title>
+  <style>
+    .slider-thumb {
+      width: 20px;
+      height: 20px;
+      background: blue;
+      border-radius: 50%;
+      cursor: pointer;
+      position: relative;
+      top: -5px;
+    }
+
+    .comment-box {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+	<h1> Review Comment Box </h1>
+  <form id="review-form" method="GET" action="your_html_file.html">
+    <div>
+      
+      <div class="slider">
+        <label for="rating">Rating:</label> <input type="range" id="rating" name="rating" min="1" max="5" step="1" value="3">
+      </div>
+    <div class="comment-box">
+      <label for="comment">Comment:</label>
+      <br>
+      <textarea id="comment" name="comment" rows="4" cols="50"></textarea>
+    </div>
+    <input type="submit" value="Submit Review">
+  </form>
+
+  <script>
+    // Get the slider thumb element
+    var thumb = document.querySelector('.slider-thumb');
+    // Add event listener for when the thumb is being dragged
+    thumb.addEventListener('mousedown', startDrag);
+    thumb.addEventListener('touchstart', startDrag);
+
+    // Function to handle the drag event
+    function startDrag(e) {
+      e.preventDefault();
+      // Add event listeners for the drag movement and end events
+      document.addEventListener('mousemove', drag);
+      document.addEventListener('touchmove', drag);
+      document.addEventListener('mouseup', endDrag);
+      document.addEventListener('touchend', endDrag);
+    }
+
+    // Function to handle the drag movement
+    function drag(e) {
+      var slider = document.querySelector('.slider');
+      var sliderWidth = slider.offsetWidth;
+      var sliderLeft = slider.getBoundingClientRect().left;
+      var posX = e.clientX || e.touches[0].clientX;
+      var offset = posX - sliderLeft;
+      var percentage = (offset / sliderWidth) * 100;
+
+      // Ensure the percentage is within the range of 0 to 100
+      percentage = Math.max(0, Math.min(100, percentage));
+      thumb.style.left = percentage + '%';
+    }
+
+    // Function to handle the end of drag event
+    function endDrag(e) {
+      document.removeEventListener('mousemove', drag);
+      document.removeEventListener('touchmove', drag);
+      document.removeEventListener('mouseup', endDrag);
+      document.removeEventListener('touchend', endDrag);
+    }
+  </script>
+</body>
+</html>
